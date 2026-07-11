@@ -1,22 +1,21 @@
-
 import streamlit as st
 import tensorflow as tf
 import numpy as np
+from PIL import Image
 import pickle
-from tensorflow.keras.preprocessing import image
 
-# Load trained model
+# Load model
 model = tf.keras.models.load_model("plant_disease_model.h5")
 
 # Load class names
 with open("class_names.pkl", "rb") as f:
-    classes = pickle.load(f)
+    class_names = pickle.load(f)
 
-# Title
+st.set_page_config(page_title="Plant Disease Detection", page_icon="🌿")
+
 st.title("🌿 Plant Disease Detection")
-st.write("Upload a plant leaf image to detect the disease.")
+st.write("Upload a plant leaf image to detect its disease.")
 
-# Upload image
 uploaded_file = st.file_uploader(
     "Choose a leaf image",
     type=["jpg", "jpeg", "png"]
@@ -24,27 +23,21 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    # Display uploaded image
-    st.image(uploaded_file, caption="Uploaded Leaf Image", use_container_width=True)
+    image = Image.open(uploaded_file).convert("RGB")
 
-    # Load image
-    img = image.load_img(uploaded_file, target_size=(128, 128))
+    st.image(image, caption="Uploaded Leaf Image", use_container_width=True)
 
-    # Convert image to array
-    img_array = image.img_to_array(img)
-
-    # Expand dimensions
-    img_array = np.expand_dims(img_array, axis=0)
-
-    # Normalize
-    img_array = img_array / 255.0
+    # Preprocess image
+    img = image.resize((128, 128))
+    img = np.array(img)
+    img = img / 255.0
+    img = np.expand_dims(img, axis=0)
 
     # Prediction
-    prediction = model.predict(img_array)
+    prediction = model.predict(img)
 
-    predicted_class = classes[np.argmax(prediction)]
-
+    predicted_index = np.argmax(prediction)
     confidence = np.max(prediction) * 100
 
-    st.success(f"Predicted Disease: {predicted_class}")
+    st.success(f"Predicted Disease: {class_names[predicted_index]}")
     st.info(f"Confidence: {confidence:.2f}%")
