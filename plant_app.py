@@ -5,11 +5,14 @@ from PIL import Image
 import pickle
 
 # Load model
-model = tf.keras.models.load_model("plant_disease_model_new.h5")
+model = tf.keras.models.load_model("plant_disease_model.h5")
 
 # Load class names
 with open("class_names.pkl", "rb") as f:
     class_names = pickle.load(f)
+st.write(type(class_names))
+st.write(len(class_names))
+st.write(class_names)
 
 st.set_page_config(page_title="Plant Disease Detection", page_icon="🌿")
 
@@ -24,10 +27,10 @@ if uploaded_file is not None:
 
     image = Image.open(uploaded_file).convert("RGB")
 
-    st.image((image, width=200), caption="Uploaded Leaf Image", use_container_width=True)
+    st.image(image, caption="Uploaded Leaf Image", use_container_width=True)
 
     # Preprocess image
-    img = image.resize((128, 128))
+    img = image.resize((64,64))
     img = np.array(img)
     img = img / 255.0
     img = np.expand_dims(img, axis=0)
@@ -38,7 +41,6 @@ if uploaded_file is not None:
     predicted_index = np.argmax(prediction)
 
    
-    confidence = np.max(prediction) * 100
 
     if predicted_index < len(class_names):
         st.success(f"Predicted Disease: {class_names[predicted_index]}")
