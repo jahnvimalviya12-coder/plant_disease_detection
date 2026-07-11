@@ -1,4 +1,8 @@
 streamlit
 tensorflow
 numpy
-pillow
+opencv-python
+matplotlib
+Pillow
+scikit-learn
+kagglehub
