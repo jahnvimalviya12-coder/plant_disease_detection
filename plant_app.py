@@ -37,10 +37,7 @@ if uploaded_file is not None:
 
     predicted_index = np.argmax(prediction)
 
-    st.write("Prediction Shape:", prediction.shape)
-    st.write("Predicted Index:", predicted_index)
-    st.write("Total Class Names:", len(class_names))
-
+   
     confidence = np.max(prediction) * 100
 
     if predicted_index < len(class_names):
