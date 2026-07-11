@@ -5,7 +5,7 @@ from PIL import Image
 import pickle
 
 # Load model
-model = tf.keras.models.load_model("plant_disease_model.h5")
+model = tf.keras.models.load_model("plant_disease_model_new.h5")
 
 # Load class names
 with open("class_names.pkl", "rb") as f:
