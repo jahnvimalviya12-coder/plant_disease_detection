@@ -1,8 +1,4 @@
 streamlit
 tensorflow
 numpy
-pandas
-matplotlib
-opencv-python
-Pillow
-scikit-learn
+pillow
