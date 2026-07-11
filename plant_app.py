@@ -45,7 +45,7 @@ if uploaded_file is not None:
 
     if predicted_index < len(class_names):
         st.success(f"Predicted Disease: {class_names[predicted_index]}")
-        st.info(f"Confidence: {confidence:.2f}%")
+       
     else:
         st.error("Prediction index is out of range.")
 
